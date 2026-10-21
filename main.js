@@ -1,4 +1,4 @@
-fetch("https://greysanatomyuniverse-api.onrender.com/api/greys-anatomy/episodes")          // Ruta al archivo JSON
+fetch("https://rickandmortyapi.com/api/location")          // Ruta al archivo JSON
   .then(response => response.json())  // Convertir la respuesta en JSON
   .then(data => {                  
     console.log(data);    
