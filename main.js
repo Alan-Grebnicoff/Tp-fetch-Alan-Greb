@@ -5,6 +5,7 @@ fetch("https://hp-api.onrender.com/api/characters/")          // Ruta al archivo
     data=data.slice(0, 100)    
     personajes = data;                   // Porque es un objeto, con nombre data y adentro de eso está el array
     Mostrarpersonajes(personajes)
+    actualizarFiltros()
   })
   .catch(error => {                   // Manejo de errores al leer el archivo JSON
     console.error('Error al leer el archivo JSON:', error);
@@ -33,5 +34,30 @@ function Mostrarpersonajes (personajes) {
     <p class="sangre">${personaje.ancestry}</p>
     <p class="vida">${vivo}</p>
     </section>`
+  })
+}
+
+let filtrarCasa = document.getElementById("filtrar-casa")
+let filtrarSangre = document.getElementById("filtrar-sangre")
+
+
+function actualizarFiltros () {
+  let casas = []
+  let sangres = []
+  personajes.forEach(personaje =>{
+    if (!casas.includes(personaje.house)) {
+      casas.push(personaje.house)
+    }
+    if (!sangres.includes(personaje.ancestry)) {
+      sangres.push(personaje.ancestry)
+    }
+  })
+  
+  casas.forEach (casa => {
+    filtrarCasa.innerHTML += `<option value="${casa}">${casa}</option>`
+  })
+
+  sangres.forEach (sangre => {
+    filtrarSangre.innerHTML += `<option value="${sangre}">${sangre}</option>`
   })
 }
