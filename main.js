@@ -1,9 +1,10 @@
-fetch("https://api.disneyapi.dev/character?pageSize=700")          // Ruta al archivo JSON, son muchas páginas, entonces porgo qué pagina y el tamaño del array data
+fetch("https://hp-api.onrender.com/api/characters/")          // Ruta al archivo JSON, son muchas páginas, entonces porgo qué pagina y el tamaño del array data
   .then(response => response.json())  // Convertir la respuesta en JSON
   .then(data => {                  
-    console.log(data);    
-    personajes = data.data;                   // Porque es un objeto, con nombre data y adentro de eso está el array
-    MostrarPersonajes(personajes)
+    console.log(data);
+    data=data.slice(0, 100)    
+    personajes = data;                   // Porque es un objeto, con nombre data y adentro de eso está el array
+    Mostrarpersonajes(personajes)
   })
   .catch(error => {                   // Manejo de errores al leer el archivo JSON
     console.error('Error al leer el archivo JSON:', error);
@@ -13,18 +14,24 @@ fetch("https://api.disneyapi.dev/character?pageSize=700")          // Ruta al ar
 let personajes = []
 let personajesContainer = document.getElementById("personajes-container")
 
-function MostrarPersonajes (personajes) {
+function Mostrarpersonajes (personajes) {
   personajesContainer.innerHTML=""
+  let vivo = ""
   personajes.forEach (personaje =>{
+    if (personaje.alive) {
+      vivo="Está vivoooo 😊"
+    }
+    else {
+      vivo="Está muerto 😢"
+    }
     personajesContainer.innerHTML+=
     `<section class=card>
     <h2 class="nombre">${personaje.name}</h2>
-    <img src=${personaje.imageUrl} alt="Personaje ${personaje.name}">
-    <ul>
-    ${personaje.films.map(pelicula => `<li>${pelicula}</li>`).join('')}
-    ${personaje.shortFilms.map(pelicula => `<li>${pelicula}</li>`).join('')} 
-    ${personaje.tvShows.map(show => `<li>${show}</li>`).join('')}
-    </ul>
+    <img src=${personaje.image} alt="foto de ${personaje.name}">
+    <h3 class="casa">${personaje.house}</h3>
+    <p class="patronus">${personaje.patronus}</p>
+    <p class="sangre">${personaje.ancestry}</p>
+    <p class="vida">${vivo}</p>
     </section>`
   })
 }
