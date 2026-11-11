@@ -21,7 +21,7 @@ function Mostrarpersonajes (personajes) {
     personajesContainer.innerHTML+=
     `<section class=card>
     <h2 class="nombre">${personaje.name}</h2>
-    <img src=${personaje.imageUrl} alt="foto de ${personaje.name}">
+    <img src=${personaje.images.lg} alt="foto de ${personaje.name}">
     <h3 class="familia">${personaje.family}</h3>
     <p class="titulo">${personaje.title}</p>
     </section>`
