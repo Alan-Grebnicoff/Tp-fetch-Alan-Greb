@@ -1,4 +1,4 @@
-fetch("https://cdn.jsdelivr.net/gh/akabab/superhero-api@0.3.0/api/all.json")          // Ruta al archivo JSON, son muchas páginas, entonces porgo qué pagina y el tamaño del array data
+fetch("https://thronesapi.com/api/v2/Characters")          // Ruta al archivo JSON, son muchas páginas, entonces porgo qué pagina y el tamaño del array data
   .then(response => response.json())  // Convertir la respuesta en JSON
   .then(data => {                  
     console.log(data);
@@ -20,8 +20,8 @@ function Mostrarpersonajes (personajes) {
   personajes.forEach (personaje =>{
     personajesContainer.innerHTML+=
     `<section class=card>
-    <h2 class="nombre">${personaje.name}</h2>
-    <img src=${personaje.images.lg} alt="foto de ${personaje.name}">
+    <h2 class="nombre">${personaje.fullName}</h2>
+    <img src=${personaje.imageUrl} alt="foto de ${personaje.fullName}">
     <h3 class="familia">${personaje.family}</h3>
     <p class="titulo">${personaje.title}</p>
     </section>`
@@ -30,7 +30,7 @@ function Mostrarpersonajes (personajes) {
 
 let filtrarFamilia = document.getElementById("filtrar-familia")
 let filtrarTitulo = document.getElementById("filtrar-titulo")
-
+let buscar = document.getElementById("buscador")
 
 function actualizarFiltros () {
   let familias = []
@@ -63,5 +63,15 @@ function filtrar() {
   Mostrarpersonajes(personajesFiltrados)
 }
 
+function filtrarBusqueda () {
+  let personajesFiltrados = personajes.filter(personaje /*comida es cada elemento del array */=> {
+    return personaje.fullName.toLowerCase().includes(buscar.value.toLowerCase())
+    || personaje.family.toLowerCase().includes(buscar.value.toLowerCase())
+    || personaje.title.toLowerCase().includes(buscar.value.toLowerCase())
+  })
+  Mostrarpersonajes(personajesFiltrados)
+}
+
 filtrarFamilia.addEventListener ("change", filtrar)
 filtrarTitulo.addEventListener("change", filtrar)
+buscar.addEventListener("input", filtrarBusqueda)
