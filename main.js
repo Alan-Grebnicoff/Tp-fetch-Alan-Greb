@@ -1,8 +1,8 @@
-fetch("https://hp-api.onrender.com/api/characters/")          // Ruta al archivo JSON, son muchas páginas, entonces porgo qué pagina y el tamaño del array data
+fetch("https://cdn.jsdelivr.net/gh/akabab/superhero-api@0.3.0/api/all.json")          // Ruta al archivo JSON, son muchas páginas, entonces porgo qué pagina y el tamaño del array data
   .then(response => response.json())  // Convertir la respuesta en JSON
   .then(data => {                  
     console.log(data);
-    data=data.slice(0, 100)    
+    data.slice(0, 100) 
     personajes = data;                   // Porque es un objeto, con nombre data y adentro de eso está el array
     Mostrarpersonajes(personajes)
     actualizarFiltros()
@@ -17,47 +17,51 @@ let personajesContainer = document.getElementById("personajes-container")
 
 function Mostrarpersonajes (personajes) {
   personajesContainer.innerHTML=""
-  let vivo = ""
   personajes.forEach (personaje =>{
-    if (personaje.alive) {
-      vivo="Está vivoooo 😊"
-    }
-    else {
-      vivo="Está muerto 😢"
-    }
     personajesContainer.innerHTML+=
     `<section class=card>
     <h2 class="nombre">${personaje.name}</h2>
-    <img src=${personaje.image} alt="foto de ${personaje.name}">
-    <h3 class="casa">${personaje.house}</h3>
-    <p class="patronus">${personaje.patronus}</p>
-    <p class="sangre">${personaje.ancestry}</p>
-    <p class="vida">${vivo}</p>
+    <img src=${personaje.imageUrl} alt="foto de ${personaje.name}">
+    <h3 class="familia">${personaje.family}</h3>
+    <p class="titulo">${personaje.title}</p>
     </section>`
   })
 }
 
-let filtrarCasa = document.getElementById("filtrar-casa")
-let filtrarSangre = document.getElementById("filtrar-sangre")
+let filtrarFamilia = document.getElementById("filtrar-familia")
+let filtrarTitulo = document.getElementById("filtrar-titulo")
 
 
 function actualizarFiltros () {
-  let casas = []
-  let sangres = []
+  let familias = []
+  let titulos = []
   personajes.forEach(personaje =>{
-    if (!casas.includes(personaje.house)) {
-      casas.push(personaje.house)
+    if (!familias.includes(personaje.family)) {
+      familias.push(personaje.family)
     }
-    if (!sangres.includes(personaje.ancestry)) {
-      sangres.push(personaje.ancestry)
+    if (!titulos.includes(personaje.title)) {
+      titulos.push(personaje.title)
     }
   })
   
-  casas.forEach (casa => {
-    filtrarCasa.innerHTML += `<option value="${casa}">${casa}</option>`
+  familias.forEach (familia => {
+    filtrarFamilia.innerHTML += `<option value="${familia}">${familia}</option>`
   })
 
-  sangres.forEach (sangre => {
-    filtrarSangre.innerHTML += `<option value="${sangre}">${sangre}</option>`
+  titulos.forEach (title => {
+    filtrarTitulo.innerHTML += `<option value="${title}">${title}</option>`
   })
 }
+
+
+function filtrar() {
+  let personajesFiltrados = personajes.filter(personaje => {
+    return personaje.family.includes(filtrarFamilia.value)
+    && personaje.title.includes(filtrarTitulo.value)
+  })
+
+  Mostrarpersonajes(personajesFiltrados)
+}
+
+filtrarFamilia.addEventListener ("change", filtrar)
+filtrarTitulo.addEventListener("change", filtrar)
